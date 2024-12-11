@@ -1,33 +1,111 @@
 #include <stdio.h>
+#include <stdlib.h>
+
+// Stack structure
+typedef struct Stack {
+    int *arr;
+    int top;
+    int capacity;
+} Stack;
+
+// Function to initialize a stack
+void initStack(Stack *stack, int capacity) {
+    stack->capacity = capacity;
+    stack->top = -1;
+    stack->arr = (int *)malloc(capacity * sizeof(int));
+}
+
+// Function to check if the stack is empty
+int isEmpty(Stack *stack) {
+    return stack->top == -1;
+}
+
+// Function to push an element to the stack
+void push(Stack *stack, int value) {
+    if (stack->top == stack->capacity - 1) {
+        printf("Stack overflow\n");
+        return;
+    }
+    stack->arr[++stack->top] = value;
+}
+
+// Function to pop an element from the stack
+int pop(Stack *stack) {
+    if (isEmpty(stack)) {
+        printf("Stack underflow\n");
+        return -1;
+    }
+    return stack->arr[stack->top--];
+}
+
+// Function to get the top element of the stack
+int peek(Stack *stack) {
+    if (isEmpty(stack)) {
+        return -1;
+    }
+    return stack->arr[stack->top];
+}
+
+// Function to sort the stack using another temporary stack
+void sortStack(Stack *stack) {
+    Stack tempStack;
+    initStack(&tempStack, stack->capacity);
+
+    while (!isEmpty(stack)) {
+        // Pop an element from the original stack
+        int current = pop(stack);
+
+        // While tempStack is not empty and the top of tempStack is greater than current,
+        // move elements from tempStack back to the original stack
+        while (!isEmpty(&tempStack) && peek(&tempStack) > current) {
+            push(stack, pop(&tempStack));
+        }
+
+        // Push current element into tempStack
+        push(&tempStack, current);
+    }
+
+    // Move the sorted elements from tempStack back to the original stack
+    while (!isEmpty(&tempStack)) {
+        push(stack, pop(&tempStack));
+    }
+}
+
+// Function to print the stack
+void printStack(Stack *stack) {
+    for (int i = 0; i <= stack->top; i++) {
+        printf("%d ", stack->arr[i]);
+    }
+    printf("\n");
+}
 
 int main() {
-    int number, firstDigit, lastDigit, sum;
+    Stack stack;
+    int n;
 
-    // Input the number
-    printf("Enter a number: ");
-    scanf("%d", &number);
+    printf("Enter the number of elements: ");
+    scanf("%d", &n);
 
-    // Handle negative numbers
-    if (number < 0) {
-        number = -number;
+    initStack(&stack, n);
+
+    printf("Enter the elements:\n");
+    for (int i = 0; i < n; i++) {
+        int value;
+        scanf("%d", &value);
+        push(&stack, value);
     }
 
-    // Find the last digit
-    lastDigit = number % 10;
+    printf("Original stack: ");
+    printStack(&stack);
 
-    // Find the first digit
-    firstDigit = number;
-    while (firstDigit >= 10) {
-        firstDigit /= 10;
-    }
+    // Sort the stack
+    sortStack(&stack);
 
-    // Calculate the sum
-    sum = firstDigit + lastDigit;
+    printf("Sorted stack: ");
+    printStack(&stack);
 
-    // Output the result
-    printf("First digit: %d\n", firstDigit);
-    printf("Last digit: %d\n", lastDigit);
-    printf("Sum of first and last digit: %d\n", sum);
+    // Free the allocated memory for the stack
+    free(stack.arr);
 
     return 0;
 }
