@@ -1,0 +1,62 @@
+#include <stdio.h>
+
+void printWord(int digit) {
+    // Function to print the word for a given digit
+    switch (digit) {
+        case 0: printf("Zero "); break;
+        case 1: printf("One "); break;
+        case 2: printf("Two "); break;
+        case 3: printf("Three "); break;
+        case 4: printf("Four "); break;
+        case 5: printf("Five "); break;
+        case 6: printf("Six "); break;
+        case 7: printf("Seven "); break;
+        case 8: printf("Eight "); break;
+        case 9: printf("Nine "); break;
+        default: break;
+    }
+}
+
+void printNumberInWords(int number) {
+    int reverse = 0, digit;
+
+    // Handle zero as a special case
+    if (number == 0) {
+        printWord(0);
+        return;
+    }
+
+    // Handle negative numbers
+    if (number < 0) {
+        printf("Minus ");
+        number = -number;
+    }
+
+    // Reverse the number
+    while (number > 0) {
+        reverse = reverse * 10 + (number % 10);
+        number /= 10;
+    }
+
+    // Print each digit in words
+    while (reverse > 0) {
+        digit = reverse % 10;
+        printWord(digit);
+        reverse /= 10;
+    }
+}
+
+int main() {
+    int number;
+
+    // Input the number
+    printf("Enter a number: ");
+    scanf("%d", &number);
+
+    // Print the number in words
+    printf("Number in words: ");
+    printNumberInWords(number);
+    printf("\n");
+
+    return 0;
+}

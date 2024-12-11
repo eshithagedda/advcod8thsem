@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <string.h>
+
+void findTwosComplement(char binary[]) {
+    int length = strlen(binary);
+    int i;
+
+    // Step 1: Find the one's complement
+    for (i = 0; i < length; i++) {
+        if (binary[i] == '0') {
+            binary[i] = '1';
+        } else if (binary[i] == '1') {
+            binary[i] = '0';
+        } else {
+            // Invalid input handling
+            printf("Invalid binary number.\n");
+            return;
+        }
+    }
+
+    // Step 2: Add 1 to the one's complement
+    for (i = length - 1; i >= 0; i--) {
+        if (binary[i] == '0') {
+            binary[i] = '1';
+            break;
+        } else {
+            binary[i] = '0';
+        }
+    }
+
+    // If all digits were flipped to '0', add '1' at the beginning
+    if (i < 0) {
+        printf("Two's complement: 1%s\n", binary);
+    } else {
+        printf("Two's complement: %s\n", binary);
+    }
+}
+
+int main() {
+    char binary[32];
+
+    // Input the binary number
+    printf("Enter a binary number: ");
+    scanf("%s", binary);
+
+    // Find and display the two's complement
+    findTwosComplement(binary);
+
+    return 0;
+}

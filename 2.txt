@@ -1,0 +1,29 @@
+#include <stdio.h>
+
+int main() {
+    int number, firstDigit, lastDigit;
+
+    // Input the number
+    printf("Enter a number: ");
+    scanf("%d", &number);
+
+    // Handle negative numbers
+    if (number < 0) {
+        number = -number;
+    }
+
+    // Find the last digit
+    lastDigit = number % 10;
+
+    // Find the first digit
+    firstDigit = number;
+    while (firstDigit >= 10) {
+        firstDigit /= 10;
+    }
+
+    // Output the result
+    printf("First digit: %d\n", firstDigit);
+    printf("Last digit: %d\n", lastDigit);
+
+    return 0;
+}

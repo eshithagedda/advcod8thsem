@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <math.h>
+
+int main() {
+    int number, firstDigit, lastDigit, digits, swappedNumber;
+
+    // Input the number
+    printf("Enter a number: ");
+    scanf("%d", &number);
+
+    // Handle negative numbers
+    int isNegative = 0;
+    if (number < 0) {
+        isNegative = 1;
+        number = -number;
+    }
+
+    // Find the last digit
+    lastDigit = number % 10;
+
+    // Find the total number of digits
+    digits = (int)log10(number);
+
+    // Find the first digit
+    firstDigit = number / (int)pow(10, digits);
+
+    // Remove the first and last digits from the number
+    int middlePart = number % (int)pow(10, digits);
+    middlePart /= 10;
+
+    // Construct the swapped number
+    swappedNumber = lastDigit * (int)pow(10, digits) + middlePart * 10 + firstDigit;
+
+    // Restore the sign if the number was negative
+    if (isNegative) {
+        swappedNumber = -swappedNumber;
+    }
+
+    // Output the result
+    printf("Number after swapping first and last digits: %d\n", swappedNumber);
+
+    return 0;
+}
